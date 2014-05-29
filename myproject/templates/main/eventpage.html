@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Event - {{ event }} </title>
+
+    <!-- Bootstrap -->
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <style>
+    .navbar {
+      margin-bottom: 20px;
+    }
+
+    body {
+      padding-top: 20px;
+      padding-bottom: 20px;
+    }
+    </style>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+      <div class="container">
+        <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand">Stuyrace</a>
+        </div>
+            <div class="collapse navbar-collapse">
+              <ul class="nav navbar-nav">
+                <li><a href="/main/create">Create Race</a></li>
+                <li><a href="/main/schedule">Scheduled Races</a></li>
+                <li><a href="{{ viewer.url }}">Profile</a></li>
+                <li><a href="/main/friends">Friends</a></li>
+            </ul>
+            <ul class="nav navbar-nav" style="float:right;">
+                <li> <a> Welcome, {{ viewer.username }} </a> </li>
+                <li><a href="/main/settings">Settings</a></li>
+                <li float="right"><a href="/main/logout">Logout</a></li>
+            </ul>
+            </div><!--/.nav-collapse -->
+        </div><!--/header-->
+      </div><!--/container-->
+    <br><br>
+    <!-- Page Content -->
+    <div class="page-header">
+        <h1> {{ event.name }} 
+        {% if not event.completed and viewer not in event.participants.all %} 
+        <a href="{{ event.join_url }}">
+        <button style="float:right;" type="button" class="btn btn-success"> <span class="glyphicon glyphicon-plus"></span> Join Event</button> 
+        </a>
+        {% elif not event.completed and viewer in event.participants.all %}
+        <a href="{{ event.leave_url }}">
+        <button style="float:right;" type="button" class="btn btn-danger"> <span class="glyphicon glyphicon-remove"></span> Leave Event</button>
+        </a>
+        {% else %}
+        <button style="float:right;" type="button" class="btn btn-primary"> <span class="glyphicon glyphicon-ok"></span> Event Completed </button>
+        {% endif %}
+        {% if not event.completed and viewer == event.owner %}
+        <a href="{{ event.results_url }}"> <button style="float:right;margin-right:1em" type="button" class="btn btn-info"> <span class="glyphicon glyphicon-ok"></span> Submit Results</button> </a>
+        {% endif %}
+
+         <small> Happening on {{ event.date }} </small> </h1> 
+    </div>
+
+      {% if messages %}
+      <ul class="messages" style="padding-left:0;">
+      {% for message in messages %}
+      {% if message.tags == "success" %}
+      <div class="alert alert-success"><strong>Success!</strong> {{ message }} </div>
+      {% elif message.tags == "error" %}
+      <div class="alert alert-danger"><strong>Whoops!</strong> {{ message }} </div>
+      {% endif %}
+      {% endfor %}
+      </ul>
+      {% endif %}
+
+   <div class="col-sm-6 col-md-4">
+        <div class="thumbnail">
+          <img src="{{ loc1url }}" alt="300x200" style="width: 300px; height: 200px;">
+          <div class="caption">
+            <h3 style="text-align:center"> <span class="glyphicon glyphicon-map-marker"></span> {{ event.start }} </h3>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-md-4">
+        <div class="thumbnail">
+          <img src="{{ loc2url }}" alt="300x200" style="width: 300px; height: 200px;">
+          <div class="caption">
+            <h3 style="text-align:center"> <span class="glyphicon glyphicon-map-marker"></span> {{ event.end }}</h3>
+          </div>
+        </div>
+      </div>
+       <div class="col-sm-6 col-md-4">
+        <div class="thumbnail">
+          <img src="{{ mapurl }}" alt="300x200" style="width: 300px; height: 200px;">
+          <div class="caption">
+            <h3 style="text-align:center">Map</h3>
+          </div>
+        </div>
+      </div>
+      {% if event.completed %}
+       <table class="table table-striped">
+        <caption> Results </caption>
+        <thead>
+            <tr> <th>Position</th> <th> Username </th> </tr>
+        </thead>
+        <tbody>
+          <!-- Change based on completed/ non-completed event - List of blues vs Green and trailing Reds --> 
+            <tr class="success"> <td>Winner</td> <td> {{ event.winner.link | safe }} </td></tr>
+            {% for participant in event.participants.all %}
+            {% if participant != event.winner %}
+            <tr class="danger"> <td>Loser</td> <td> {{ participant.link | safe }} </td>  </tr>
+            {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+    <ul class="list-group col-md-6">
+      {% for participant in event.participants.all %}
+      <li class="list-group-item"> <strong> {{ participant.link | safe }} </strong> {{ participant.first_name }} {{ participant.last_name }} </li>
+      {% endfor %}
+    </ul>
+        <ul class="list-group col-md-6">
+      <li class="list-group-item">Owner: {{ event.owner.link | safe }} </li>
+      <li class="list-group-item">Public: {{ event.public }} </li>
+      <li class="list-group-item">Current Players: {{ event.curr_players }} </li>
+      <li class="list-group-item">Maximum Players: {{ event.max_players }} </li>
+      <li class="list-group-item">Created: {{ event.created }}</li>
+      <li class="list-group-item">Completed: {{ event.completed }}</li>
+    </ul>
+    <!-- End Page Content --> 
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+  </body>
+</html>

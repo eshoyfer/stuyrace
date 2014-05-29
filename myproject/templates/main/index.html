@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+
+{% load static %}
+{% load bootstrap %}
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="../../assets/ico/favicon.ico">
+
+    <title>Home</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <style>
+      body {
+        padding-top: 70px;
+        padding-bottom: 30px;
+      }
+
+      .theme-dropdown .dropdown-menu {
+        position: static;
+        display: block;
+        margin-bottom: 20px;
+      } 
+
+      .theme-showcase > p > .btn {
+        margin: 5px 0;
+      }
+    </style>
+    <!-- Just for debugging purposes. Don't actually copy this line! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Stuyrace</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <a style="margin-top: 0.5em" class="narbar-form navbar-right" href="/main/login">
+            <button style="float:right" type="submit" class="btn btn-success">Sign in</button>
+          </a>
+        </div><!--/.navbar-collapse -->
+      </div>
+    </div>
+
+    {% if messages %}
+      <ul class="messages" style="padding-left:0;">
+      {% for message in messages %}
+      {% if message.tags == "success" %}
+      <div class="alert alert-success"><strong>Success!</strong> {{ message }} </div>
+      {% elif message.tags == "error" %}
+      <div class="alert alert-danger"><strong>Whoops!</strong> {{ message }} </div>
+      {% endif %}
+      {% endfor %}
+      </ul>
+      {% endif %}
+
+    <!-- Main jumbotron for a primary marketing message or call to action -->
+    <div class="jumbotron">
+      <div class="container">
+        <h1>Welcome to Stuyrace.</h1>
+        <p>It's an exciting new way to stay healthy and have fun with your friends.</p>
+        <p><a href="/main/register" class="btn btn-primary btn-lg" role="button">Sign up &raquo;</a></p>
+      </div>
+    </div>
+
+    <div class="container">
+      <!-- Example row of columns -->
+      <div class="row">
+        <div class="col-md-4">
+          <h2>Support heart health  <span class="glyphicon glyphicon-heart"></span></h2>
+          <p>Let's get your heart rate going. With races this fun, you'll always stay in shape. Promote a healthy body through regular cardiovascular excercise. Live longer. Enjoy yourself. </p>
+          <p><a class="btn btn-default" href="http://www.heart.org/HEARTORG/Conditions/Conditions_UCM_001087_SubHomePage.jsp" role="button">View details &raquo;</a></p>
+        </div>
+        <div class="col-md-4">
+          <h2>Socialize with peers <span class="glyphicon glyphicon-user"></span></h2>
+          <p>Who said exercise was boring? With Stuyrace, bring your friends along for the ride. Improve your social well-being. Meet new people. Make new friendships. Discover new places. The possibilities are endless. </p>
+          <p><a class="btn btn-default" href="http://www.unh.edu/health-services/ohep/social-wellness" role="button">View details &raquo;</a></p>
+       </div>
+        <div class="col-md-4">
+          <h2>Stay competitive <span class="glyphicon glyphicon-flash"></span></h2>
+          <p>Bring it. Channel your inner athlete with Stuyrace's competitive reporting functionality. Stay on top of your game. Work hard. Be the best.</p>
+          <p><a class="btn btn-default" href="http://en.wikipedia.org/wiki/Competition" role="button">View details &raquo;</a></p>
+        </div>
+      </div>
+
+      <hr>
+
+      <footer>
+        <p>&copy; Elvin Shoyfer 2014</p>
+      </footer>
+    </div> <!-- /container -->
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+  </body>
+</html>
